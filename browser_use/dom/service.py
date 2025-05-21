@@ -1,9 +1,8 @@
-import gc
 import json
 import logging
 from dataclasses import dataclass
 from importlib import resources
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
 if TYPE_CHECKING:
@@ -153,8 +152,6 @@ class DomService:
 		del js_node_map
 		del js_root_id
 
-		gc.collect()
-
 		if html_to_dict is None or not isinstance(html_to_dict, DOMElementNode):
 			raise ValueError('Failed to parse HTML to dictionary')
 
@@ -163,7 +160,7 @@ class DomService:
 	def _parse_node(
 		self,
 		node_data: dict,
-	) -> tuple[Optional[DOMBaseNode], list[int]]:
+	) -> tuple[DOMBaseNode | None, list[int]]:
 		if not node_data:
 			return None, []
 
